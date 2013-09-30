@@ -12,6 +12,11 @@
 (function () {
     "use strict";
 
+    /**
+     * Focus marker.
+     * @extends {L.CircleMarker}
+     * @type {function}
+     */
     L.FocusMarker = L.CircleMarker.extend({
         options: {
             clickable: false,
@@ -23,6 +28,11 @@
             duration: 20
         },
 
+        /**
+         * @constructor
+         * @param {L.LatLng} latlng
+         * @param {object} options
+         */
         initialize: function (latlng, options) {
             L.CircleMarker.prototype.initialize.apply(this, arguments);
             this._baseRadius = this.options.radius;
@@ -31,16 +41,29 @@
             this.options.opacity = 0;
         },
 
+        /**
+         * @param {L.Map} map
+         */
         onAdd: function (map) {
             L.CircleMarker.prototype.onAdd.apply(this, arguments);
             this.animate();
         },
 
+        /**
+         * Removes marker from map.
+         * @param {L.Map} map
+         * @returns {L.FocusMarker}
+         */
         removeFrom: function (map) {
             map.removeLayer(this);
             return this;
         },
 
+        /**
+         * Sets marker position.
+         * @param {L.LatLng} latlng
+         * @returns {L.FocusMarker}
+         */
         setLatLng: function (latlng) {
             L.CircleMarker.prototype.setLatLng.apply(this, arguments);
             if (this._map) {
@@ -49,6 +72,10 @@
             return this;
         },
 
+        /**
+         * Shows marker.
+         * @returns {L.FocusMarker}
+         */
         show: function () {
             if (this._map) {
                 this.redraw();
@@ -58,7 +85,7 @@
         },
 
         /**
-         * Shows marker
+         * Animates marker.
          */
         animate: function () {
             this._stopAnimation();
@@ -94,6 +121,10 @@
             animation();
         },
 
+        /**
+         * Stops scheduled animation.
+         * @private
+         */
         _stopAnimation: function () {
             if (this._animation) {
                 var cancelAnimationFrame = window.cancelAnimationFrame ||
@@ -106,10 +137,17 @@
         }
     });
 
+    /**
+     * Focus marker factory.
+     * @param {L.LatLng} latlng
+     * @param {object} options
+     * @returns {L.FocusMarker}
+     */
     L.focusMarker = function (latlng, options) {
         return new L.FocusMarker(latlng, options);
     };
 
+    /* Shortcuts */
     L.Marker.Focus = L.Marker.Focus;
     L.marker.focus = L.focusMarker;
 
