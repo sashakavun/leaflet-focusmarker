@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Leaflet Focus Marker plugin example</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css"/>
+    <![endif]-->
+</head>
+<body>
+<h1>L.FocusMarker</h1>
+
+<h2>Usage Example</h2>
+
+<p>Click on map to add markers.</p>
+
+<div id="map" style="width:600px;height:300px"></div>
+<p><label for="single"><input type="checkbox" id="single" checked="checked"> Reuse focus layer</label></p>
+<p><a href="#" id="clear">Clear markers</a></p>
+
+<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+<script src="L.FocusMarker.js"></script>
+<script>
+    (function () {
+        // Create map
+        var center = [ 45.033, 38.967 ];
+        var map = L.map("map", {
+            doubleClickZoom: false,
+            layers: [L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png")],
+            center: center,
+            zoom: 13
+        });
+        var markers = L.layerGroup();
+        markers.addTo(map);
+        markers.addLayer(L.marker(center));
+
+        // Persistent animated focus marker
+        var focus = L.focusMarker(center, { "dispose": false }).addTo(map);
+        focus.on("animationend", function () {
+            if (single.checked) {
+                // Show focus again
+                focus.show();
+            }
+        });
+
+        map.on("click", function (ev) {
+            var latlng = ev.latlng;
+            if (single.checked) {
+                focus.setLatLng(latlng);
+            } else {
+                map.addLayer(L.focusMarker(latlng, { "color": "rgba("
+                    + Math.round(Math.random() * 255) + ","
+                    + Math.round(Math.random() * 255) + ","
+                    + Math.round(Math.random() * 255) + ",1)" }));
+            }
+            markers.addLayer(L.marker(latlng));
+        });
+
+        L.DomEvent.on(clear, "click", function (ev) {
+            ev.preventDefault();
+            markers.clearLayers();
+        })
+    })();
+</script>
+
+
+</body>
+</html>
