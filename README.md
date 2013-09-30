@@ -5,7 +5,7 @@ Shrinking circle marker plugin for Leaflet.
 
 A simple marker for use when you want to draw the user's attention at some place on the map.
 
-Check out the [example](http://keta.io/L.FocusMarker/example.html).
+Check out the [example](http://keta.github.io/L.FocusMarker/example.html).
 
 Browser Support
 ---------------
