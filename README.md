@@ -23,28 +23,45 @@ Usage
 
 Add marker to the map:
 
-```js
-var map = L.map("map");
-var latlng = [ 45.033, 38.967 ];
-L.focusMarker(latlng).addTo(map);
-```
+    ```js
+    var map = L.map("map");
+    var latlng = [ 45.033, 38.967 ];
+    L.focusMarker(latlng).addTo(map);
+    ```
 
 Marker will remove itself from map automatically after disappearing.
 
 If you do not want marker to be auto-removed, set `dispose` option to `false`:
 
-```js
-var map = L.map("map");
-var latlng1 = [ 51.505, -0.09 ];
-var latlng2 = [ 45.033, 38.967 ];
-var focus = L.focusMarker(latlng1, { "dispose": false });
-focus.addTo(map);
+    ```js
+    var map = L.map("map");
+    var latlng1 = [ 51.505, -0.09 ];
+    var latlng2 = [ 45.033, 38.967 ];
+    var focus = L.focusMarker(latlng1, { "dispose": false });
+    focus.addTo(map);
 
-// some lines below:
-focus.setLatLng(latlng2);
-
-```
+    // some lines below:
+    focus.setLatLng(latlng2);
+    ```
 
 Marker will show again when its coordinates changed or on `show()` method call.
 
 Marker fires `animationend` event after disappearing.
+
+
+Development
+-----------
+
+Project requires `npm` for development environment.
+
+To set up, run following command in the project's directory:
+
+    ```
+    npm install
+    ```
+
+To build minified file, run `build` Grunt task in the project's directory:
+
+    ```
+    grunt build
+    ```
