@@ -2,9 +2,9 @@
     "name": "leaflet-focusmarker",
     "version": "0.0.1",
     "description": "Focus marker for Leaflet library",
-    "main": "L.FocusMarker.js",
+    "main": "leaflet-focusmarker.js",
     "repository": {
        "type": "git",
-        "url": "git://github.com/keta/L.FocusMarker.git"
+        "url": "git://github.com/keta/leaflet-focusmarker.git"
     }
 }
