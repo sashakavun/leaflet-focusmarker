@@ -6,5 +6,9 @@
     "repository": {
        "type": "git",
         "url": "git://github.com/keta/leaflet-focusmarker.git"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-uglify": "0.2.4"
     }
 }
