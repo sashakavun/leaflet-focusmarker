@@ -10,7 +10,7 @@ module.exports = function (grunt) {
                 preserveComments: false,
                 banner: "/* <%= pkg.name %> <%= pkg.version %> (<%= pkg.repository.url %>) */\n"
             },
-            query: {
+            default: {
                 files: {
                     "<%= pkg.name %>.min.js" : [ "<%= pkg.name %>.js" ]
                 }
