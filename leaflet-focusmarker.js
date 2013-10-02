@@ -148,7 +148,7 @@
     };
 
     /* Shortcuts */
-    L.Marker.Focus = L.Marker.Focus;
+    L.Marker.Focus = L.FocusMarker;
     L.marker.focus = L.focusMarker;
 
 })();
