@@ -150,4 +150,11 @@
     L.Marker.Focus = L.FocusMarker;
     L.marker.focus = L.focusMarker;
 
+    L.Marker.include({
+        focusAt: function () {
+            this._map.panTo(this._latlng);
+            L.focusMarker(this._latlng).addTo(this._map);
+        }
+    })
+
 })();

@@ -1,6 +1,6 @@
 {
     "name": "leaflet-focusmarker",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Focus marker for Leaflet library",
     "main": "leaflet-focusmarker.js",
     "repository": {

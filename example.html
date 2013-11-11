@@ -17,6 +17,7 @@
 
 <div id="map" style="width:600px;height:300px"></div>
 <p><label for="single"><input type="checkbox" id="single" checked="checked"> Reuse focus layer</label></p>
+
 <p><a href="#" id="clear">Clear markers</a></p>
 
 <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
@@ -31,12 +32,25 @@
             center: center,
             zoom: 13
         });
+        var createMarker = function (latlng) {
+            var marker = L.marker(latlng);
+            marker.on("click", function () {
+                // Focus on marker on click
+                this.focusAt();
+            });
+            return marker;
+        };
+
         var markers = L.layerGroup();
         markers.addTo(map);
-        markers.addLayer(L.marker(center));
 
+        // Adding marker
+        markers.addLayer(createMarker(center));
         // Animated focus marker
-        var fast = L.focusMarker(center, { "dispose": false }).addTo(map);
+        var fast = L.focusMarker(center, {
+            "dispose": false,
+            "color": "#6a2"
+        }).addTo(map);
         fast.on("animationend", function () {
             if (single.checked) {
                 // Show focus again
@@ -45,22 +59,30 @@
         });
 
         // Persistent slowly animated focus marker
-        var slow = L.focusMarker(center, { "dispose": false, "radius": 60, "color": "#26f", "duration": 3000 }).addTo(map);
+        var slow = L.focusMarker(center, {
+            "dispose": false,
+            "radius": 60,
+            "color": "#26f",
+            "duration": 3000
+        }).addTo(map);
         slow.on("animationend", function () {
             slow.show();
         });
 
+        // Add new markers on map click
         map.on("click", function (ev) {
             var latlng = ev.latlng;
             if (single.checked) {
                 fast.setLatLng(latlng);
             } else {
-                map.addLayer(L.focusMarker(latlng, { "color": "rgba("
-                    + Math.round(Math.random() * 255) + ","
-                    + Math.round(Math.random() * 255) + ","
-                    + Math.round(Math.random() * 255) + ",1)" }));
+                map.addLayer(L.focusMarker(latlng, {
+                    "color": "rgba("
+                        + Math.round(Math.random() * 255) + ","
+                        + Math.round(Math.random() * 255) + ","
+                        + Math.round(Math.random() * 255) + ",1)"}));
             }
-            markers.addLayer(L.marker(latlng));
+            markers.addLayer(createMarker(latlng));
+
         });
 
         L.DomEvent.on(clear, "click", function (ev) {
