@@ -6,15 +6,15 @@ module.exports = function (grunt) {
     grunt.util.linefeed = "\n";
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
+        "pkg": grunt.file.readJSON("package.json"),
 
-        uglify: {
-            options: {
-                preserveComments: false,
-                banner: "/* <%= pkg.name %> <%= pkg.version %> (<%= pkg.repository.url %>) */\n"
+        "uglify": {
+            "options": {
+                "preserveComments": false,
+                "banner": "/* <%= pkg.name %> <%= pkg.version %> (<%= pkg.repository.url %>) */\n"
             },
-            default: {
-                files: {
+            "default": {
+                "files": {
                     "<%= pkg.name %>.min.js" : [ "<%= pkg.name %>.js" ]
                 }
             }

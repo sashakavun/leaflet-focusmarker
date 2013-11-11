@@ -19,13 +19,14 @@
      */
     L.FocusMarker = L.CircleMarker.extend({
         options: {
-            clickable: false,
-            keyboard: false,
-            dispose: true,
-            radius: 40,
-            color: "#f22",
-            opacity: 0.8,
-            duration: 20
+            "clickable": false,
+            "keyboard": false,
+            "dispose": true,
+            "radius": 40,
+            "color": "#f22",
+            "opacity": 0.8,
+            "duration": 1000, // 1 sec
+            "step": 10 // every 10 msec
         },
 
         /**
@@ -78,8 +79,8 @@
          */
         show: function () {
             if (this._map) {
-                this.redraw();
                 this.animate();
+                this.redraw();
             }
             return this;
         },
@@ -88,37 +89,36 @@
          * Animates marker.
          */
         animate: function () {
-            this._stopAnimation();
+            clearInterval(this._animation);
             var radius = this._baseRadius;
             var opacity = this._baseOpacity;
-            var step = opacity / radius;
             var self = this;
             var requestAnimationFrame = window.requestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.msRequestAnimationFrame ||
-                function (callback) {
-                    return setTimeout(callback, self.options.duration);
-                };
-            var animation = function () {
-                if (self._map) {
-                    radius = Math.max(0, radius - 0.4);
-                    opacity = Math.max(0, opacity - step);
-                    self.setStyle({
-                        "radius": radius,
-                        "opacity": opacity
-                    });
-                    if (opacity || radius) {
-                        self._animation = requestAnimationFrame(animation);
-                    } else {
-                        self.fire("animationend");
-                        if (self.options.dispose) {
-                            self._map.removeLayer(self);
-                        }
+                function (callback) { return callback.apply(); };
+            var animation = function (duration, delay, callback) {
+                var start = new Date();
+                self._animation = setInterval(function () {
+                    var progress = (new Date() - start) / duration;
+                    if (progress > 1) {
+                        progress = 1;
                     }
-                }
+                    requestAnimationFrame(function () {
+                        callback(progress);
+                    });
+                    if (progress === 1) {
+                        self._stopAnimation();
+                    }
+                }, delay);
             };
-            animation();
+            animation(this.options.duration, this.options.step, function (progress) {
+                self.setStyle({
+                    "radius": Math.max(0, radius - (radius * progress)),
+                    "opacity": Math.max(0, opacity - (opacity * progress))
+                });
+            });
         },
 
         /**
@@ -127,12 +127,11 @@
          */
         _stopAnimation: function () {
             if (this._animation) {
-                var cancelAnimationFrame = window.cancelAnimationFrame ||
-                    window.mozCancelAnimationFrame ||
-                    window.webkitCancelAnimationFrame ||
-                    window.webkitCancelRequestAnimationFrame ||
-                    clearTimeout;
-                cancelAnimationFrame(this._animation);
+                clearInterval(this._animation);
+                this.fire("animationend");
+                if (this.options.dispose) {
+                    this._map.removeLayer(this);
+                }
             }
         }
     });
