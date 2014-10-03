@@ -5,7 +5,7 @@
     "main": "leaflet-focusmarker.js",
     "repository": {
        "type": "git",
-        "url": "git://github.com/keta/leaflet-focusmarker.git"
+        "url": "git://github.com/sashakavun/leaflet-focusmarker.git"
     },
     "devDependencies": {
         "grunt": "~0.4.1",
